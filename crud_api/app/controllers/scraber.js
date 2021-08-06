@@ -120,10 +120,17 @@ const loadItem = async (page, art, data) => {
   // let text = await page.$eval('#product-about > p', text => text.textContent);
 
   let text = await page.evaluate(() => {
-    const element = document.querySelector('#product-about > p')
+    let element = document.querySelector('#product-about > p')
     if (element) {
       return element.textContent
+    } else {
+      let element = document.querySelector('#smallannotation > p')
+      if (element) {
+        return element.textContent
+      } 
+      return '';
     }
+
     return '';
   })
 
@@ -148,7 +155,7 @@ const loadItem = async (page, art, data) => {
   ISBN = ISBN[1].trim()
 
    let img = await page.evaluate(() => {
-    const element = document.querySelector('#product-image img')
+    const element = document.querySelector('#product-image > img')
     if (element) {
       return element.textContent
     }
