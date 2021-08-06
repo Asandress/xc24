@@ -180,19 +180,33 @@ const loadItem = async (page, art, data) => {
   // Weight
 
   //dimensions
-  let dimensions = await page.$eval('.dimensions', text => text.textContent);
+  let dimensions = await page.evaluate(() => {
+    const element = document.querySelector('.dimensions')
+    if (element) {
+      return element.textContent
+    }
+    return '';
+  })
+  // await page.$eval('.dimensions', text => text.textContent);
   dimensions = dimensions.replace('Размеры: ', '').replace(' мм', '').split('x')
 
 
   // //weigth
-  let weight = await page.$eval('.weight', text => text.textContent);
+  let weight = await page.evaluate(() => {
+    const element = document.querySelector('.weight')
+    if (element) {
+      return element.textContent
+    }
+    return '';
+  })
+  // await page.$eval('.weight', text => text.textContent);
   dataObj['Weight'] = weight.replace('Масса: ', '').replace(' г','')
   // //width
-  dataObj['Width'] = dimensions[1]
+  dataObj['Width'] = dimensions[1] ? dimensions[1] : ''
   //heigth
-  dataObj['Hight'] = dimensions[0]
+  dataObj['Hight'] = dimensions[0] ? dimensions[0] : ''
   //length
-  dataObj['Leghs'] = dimensions[2]
+  dataObj['Leghs'] = dimensions[2] ? dimensions[2] : ''
   
   // Suppler
   dataObj['Suppler'] = ''
@@ -218,7 +232,14 @@ const loadItem = async (page, art, data) => {
   dataObj['Year'] = manufacturer[1].replace('. г', '')
   // Stranic
   // //pages
-  let pages = await page.$eval('.pages2', text => text.textContent);
+  let pages = await page.evaluate(() => {
+    const element = document.querySelector('.pages2')
+    if (element) {
+      return element.textContent
+    }
+    return '';
+  })
+  // await page.$eval('.pages2', text => text.textContent);
   pages = pages.replace('Страниц: ', '')
   dataObj['Stranic'] = pages
 
