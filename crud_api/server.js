@@ -3,11 +3,17 @@ const formData = require("express-form-data");
 const cors = require("cors")
 const path = require('path')
 
+const gm = require('gm');
+
 const morgan = require('morgan')
 
 const axios = require('axios')
 
+const fetch = require('node-fetch');
+
 const os = require("os");
+
+
 
 const options = {
   uploadDir: os.tmpdir(),
@@ -49,8 +55,60 @@ app.use(express.urlencoded({ extended: true }))
 
 // db.sequelize.sync();
 
+async function download(url){
+  const response = await fetch(url);
+  const buffer = await response.buffer();
+ 
 
+  const promise1 = new Promise((resolve, reject) => {
+    fs.writeFile(`./data/img/image.png`, buffer, () => {
+    gm("./data/img/image.png").resize(500)
+    .write('./data/img/sample_image.jpg', function(err) {
+        if(err) console.log(err);
+        console.log("Jpg to png!")
+        
+        // resolve(path.join(__dirname, './data/img/sample_image.jpg'))
+        resolve('/data/img/sample_image.jpg')
+        
+    });
+  })
+})
 
+return promise1
+  
+    
+}
+
+app.use('/data/img', express.static(__dirname + '/data/img/'));
+
+app.post('/api/convertr/url', async (req, res) => {
+
+  console.log('body ===>', req.body.url)
+
+  const url = req.body.url
+
+   download(url).then(data => {
+    console.log(data)
+  //  res.sendFile(data);
+    res.json({
+      message: 'succsess',
+      url:data
+    });
+    //resolve(path.join(__dirname, './data/img/sample_image.jpg'))
+   })
+  
+
+  
+
+  // res.json({
+  //   message: 'succsess',
+  // });
+
+  
+
+  
+})
+//--------------------------
 app.post('/api/project/create', (req, res) => {
 
   console.log('body ===>', req.body)
