@@ -217,7 +217,7 @@ app.get(`/api/project/csv_check_file/:id`, (req, res) => {
     if (fs.existsSync(`./data/projects/${id}.csv`)) {
       res.json({
         message: 'succsess',
-        url: `http://localhost:4200/projects/${id}.csv`
+        url: `http://188.166.125.182/projects/${id}.csv`
       });
     }
   } catch(err) {

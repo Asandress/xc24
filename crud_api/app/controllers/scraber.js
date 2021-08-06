@@ -14,7 +14,8 @@ let r = []
 
   const urlPromise = async (art, data) => new Promise(async (resolve, reject) => {
     const browser = await puppeteer.launch({
-      headless: true
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
     const page = await browser.newPage();
     console.log(`https://www.labirint.ru/books/${art}/`)
@@ -78,7 +79,7 @@ async function download(url, art, ISBN){
         console.log("Jpg to png!")
         
         // resolve(path.join(__dirname, './data/img/sample_image.jpg'))
-        resolve(`http://localhost:4200/img/${ISBN}.jpg`)
+        resolve(`http://188.166.125.182/img/${ISBN}.jpg`)
         
     });
   })
