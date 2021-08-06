@@ -124,7 +124,6 @@ const loadItem = async (page, art, data) => {
     if (element) {
       return element.textContent
     }
-  
     return '';
   })
 
@@ -159,7 +158,15 @@ const loadItem = async (page, art, data) => {
   dataObj['Manufacturer'] = manufacturer[0]
   
   // Autors
-  dataObj['author'] = await page.$eval('.authors > a', text => text.textContent);
+  dataObj['author'] = await page.evaluate(() => {
+    const element = document.querySelector('.authors > a')
+    if (element) {
+      return element.textContent
+    }
+    return '';
+  })
+  
+  // await page.$eval('.authors > a', text => text.textContent);
   // ISBN
   dataObj['ISBN'] = ISBN
   // Weight

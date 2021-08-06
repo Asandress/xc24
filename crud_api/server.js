@@ -32,9 +32,12 @@ import fs from'fs'
 import reader from 'xlsx'
 import { Scrabber } from "./app/controllers/scraber.js"
 
-const HOST = process.env.NODE_ENV === 'production' ? process.env.HOST : process.env.DEV_HOST
+// const HOST = process.env.NODE_ENV === 'production' ? process.env.HOST : process.env.DEV_HOST
 
-const PORT = process.env.NODE_ENV === 'production' ? process.env.PORT : process.env.DEV_PORT
+// const PORT = process.env.NODE_ENV === 'production' ? process.env.PORT : process.env.DEV_PORT
+
+const HOST = 'http://localhost'
+const PORT = 4200
 
 var corsOptions = {
   origin: `${HOST}:${PORT}`
