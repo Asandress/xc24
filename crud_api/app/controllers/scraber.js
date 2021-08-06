@@ -147,9 +147,17 @@ const loadItem = async (page, art, data) => {
   ISBN = ISBN.split(':')
   ISBN = ISBN[1].trim()
 
-   let img = await page.$eval('#product-image > img', img => img.src);
+   let img = await page.evaluate(() => {
+    const element = document.querySelector('#product-image img')
+    if (element) {
+      return element.textContent
+    }
+    return '';
+  })
+  //  await page.$eval('#product-image > img', img => img.src);
 
-   let imgURL = await download(img, art, ISBN)
+
+   let imgURL = img !== '' ? await download(img, art, ISBN) : ''
    
   dataObj['ItemImageUrl'] = imgURL
   // Manufacturer
