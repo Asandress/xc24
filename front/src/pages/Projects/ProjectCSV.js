@@ -29,7 +29,7 @@ export const ProjectCSV = () => {
 
   async function getData() {
     if (loading) return
-    let data = await axios.get(`http://188.166.125.182:4200/api/project/csv/${prjID}`)
+    let data = await axios.get(`http://188.166.125.182:4200/app2/api/project/csv/${prjID}`)
     //console.log(data.data)
     setData(data.data.data)
     setDataLoad(true)
@@ -37,7 +37,7 @@ export const ProjectCSV = () => {
   }
 
   async function checkFile() {
-    let data = await axios.get(`http://188.166.125.182:4200/api/project/csv_check_file/${prjID}`)
+    let data = await axios.get(`http://188.166.125.182:4200/app2/api/project/csv_check_file/${prjID}`)
     if(data.data.url === '' ) return
     setFileURL(data.data.url)
   }
@@ -56,7 +56,7 @@ export const ProjectCSV = () => {
 
 
 const getExport = async () => {
-  let data = await axios.get(`http://188.166.125.182:4200/api/project/get_csv/${prjID}`)
+  let data = await axios.get(`http://188.166.125.182:4200/app2/api/project/get_csv/${prjID}`)
   console.log(data)
   checkFile()
 }

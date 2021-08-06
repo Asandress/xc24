@@ -42,14 +42,14 @@ export const ProjectAdd = () => {
       'project': value
     }
     try {
-      const data = await axios.post(`http://188.166.125.182:4200/api/project/create`, formData, {
+      const data = await axios.post(`http://188.166.125.182:4200/app2/api/project/create`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       })
       // const data = await axios({
       //   method: 'post',
-      //   url: `http://188.166.125.182:4200/api/project/create?name=test`,
+      //   url: `http://188.166.125.182:4200/app2/api/project/create?name=test`,
       //   data:{
       //     'data':formData,
       //     'string': JSON.stringify(json, null, 2)

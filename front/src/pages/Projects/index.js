@@ -24,7 +24,7 @@ export const Projects = () => {
 
   async function getData() {
     if (loading) return
-    let data = await axios.get('http://188.166.125.182:4200/api/project/project_list')
+    let data = await axios.get('http://188.166.125.182:4200/app2/api/project/project_list')
     //console.log(data.data)
     setData(data.data.data)
     setDataLoad(true)
