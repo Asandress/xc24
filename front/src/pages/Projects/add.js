@@ -42,14 +42,14 @@ export const ProjectAdd = () => {
       'project': value
     }
     try {
-      const data = await axios.post(`/app2/api/project/create`, formData, {
+      const data = await axios.post(`/api/project/create`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       })
       // const data = await axios({
       //   method: 'post',
-      //   url: `/app2/api/project/create?name=test`,
+      //   url: `/api/project/create?name=test`,
       //   data:{
       //     'data':formData,
       //     'string': JSON.stringify(json, null, 2)
