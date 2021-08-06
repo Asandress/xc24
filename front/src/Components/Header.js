@@ -2,8 +2,10 @@ import React from 'react'
 
 
 export const Header = () => {
-  return(
-    <header>header</header>
-    
+  return (
+    <header>
+      <h1>xc24</h1>
+    </header>
+
   )
 }

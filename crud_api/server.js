@@ -1,17 +1,18 @@
-const express = require("express")
-const formData = require("express-form-data");
-const cors = require("cors")
-const path = require('path')
+import express from "express"
+import formData from "express-form-data"
+import cors from "cors"
 
-const gm = require('gm');
 
-const morgan = require('morgan')
 
-const axios = require('axios')
+import morgan from'morgan'
 
-const fetch = require('node-fetch');
+import fetch from'node-fetch'
+import gm from 'gm'
+import os from "os"
 
-const os = require("os");
+import dotenv from "dotenv";
+
+import path from 'path';
 
 
 
@@ -20,15 +21,16 @@ const options = {
   autoClean: true
 };
 
-require('dotenv').config();
+dotenv.config()
 
 
 const app = express()
 
 //reader
-const fs = require('fs');
-const reader = require('xlsx');
-const { Scrabber } = require("./app/controllers/scraber");
+import converter from 'json-2-csv'
+import fs from'fs'
+import reader from 'xlsx'
+import { Scrabber } from "./app/controllers/scraber.js"
 
 const HOST = process.env.NODE_ENV === 'production' ? process.env.HOST : process.env.DEV_HOST
 
@@ -78,8 +80,11 @@ return promise1
   
     
 }
-
-app.use('/data/img', express.static(__dirname + '/data/img/'));
+// app.use(express.static(path.join(__dirname, '../public')));
+// app.use('/data/img', express.static('/data/img/'));
+// app.use('*', express.static('/data/projects/'));
+// app.use(express.static('/data/projects/'))
+app.use(express.static('data'))
 
 app.post('/api/convertr/url', async (req, res) => {
 
@@ -94,18 +99,8 @@ app.post('/api/convertr/url', async (req, res) => {
       message: 'succsess',
       url:data
     });
-    //resolve(path.join(__dirname, './data/img/sample_image.jpg'))
+    
    })
-  
-
-  
-
-  // res.json({
-  //   message: 'succsess',
-  // });
-
-  
-
   
 })
 //--------------------------
@@ -154,7 +149,7 @@ console.log(date)
 
   fs.writeFile(`./data/projects/index.json`, JSON.stringify(projectJson), function (err) {
     if (err) return console.log(err);
-    console.log(projectJson);
+    console.log('project =>',projectJson);
   });
 
 
@@ -196,6 +191,81 @@ app.get(`/api/project/get_project/:id`, (req, res) => {
   });
 })
 
+app.get(`/api/project/csv/:id`, (req, res) => {
+
+  const id = req.params.id
+
+  console.log(id)
+
+
+  const pList = fs.readFileSync(`./data/projects/${id}.json`)
+  let projectJson = JSON.parse(pList)
+
+  res.json({
+    message: 'succsess',
+    data: projectJson
+  });
+})
+//csv_check_file
+app.get(`/api/project/csv_check_file/:id`, (req, res) => {
+
+  const id = req.params.id
+
+  console.log(id)
+
+  try {
+    if (fs.existsSync(`./data/projects/${id}.csv`)) {
+      res.json({
+        message: 'succsess',
+        url: `http://localhost:4200/projects/${id}.csv`
+      });
+    }
+  } catch(err) {
+    console.error(err)
+    res.json({
+      message: 'error',
+      url: ''
+    });
+  }
+  
+  
+
+  res.json({
+    message: 'succsess',
+    data: projectJson
+  });
+})
+
+app.get(`/api/project/get_csv/:id`, (req, res) => {
+
+  const id = req.params.id
+
+  console.log(id)
+
+
+  const pList = fs.readFileSync(`./data/projects/${id}.json`)
+  let projectJson = JSON.parse(pList)
+
+  // convert JSON array to CSV string
+converter.json2csv(projectJson, (err, csv) => {
+  if (err) {
+      throw err;
+  }
+
+  // print CSV string
+  console.log(csv);
+
+  // write CSV to a file
+  fs.writeFileSync(`./data/projects/${id}.csv`, csv);
+  
+});
+
+  res.json({
+    message: 'succsess',
+    data: projectJson
+  });
+})
+
 app.get(`/api/project/scrab/:id`, async (req, res) => {
 
   const id = req.params.id
@@ -205,24 +275,17 @@ app.get(`/api/project/scrab/:id`, async (req, res) => {
   let data = JSON.parse(pList)
 
   
-    Scrabber(id, data)
-  
+    await Scrabber(id, data).then(done => {
+      console.log('done ===> ',done)
 
 
-
-
-  res.json({
-    message: 'service start',
-  });
+      res.json({
+        message: done,
+      })
+    })
+    
 })
 
-
-
-
-
-// //routes for API
-// require("./app/routes/feedback.routes")(app)
-// require("./app/routes/elastic.routes")(app)
 
 
 

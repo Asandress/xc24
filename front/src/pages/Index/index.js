@@ -1,11 +1,18 @@
-import React from 'react'
-
-
+import React, { useEffect, useState } from 'react'
 
 export const Index = () => {
-  return(
-    
-    <main>content</main>
-   
+  const [loading, setLoading] = useState(false)
+  useEffect(() => {
+    //console.log('index load')
+    setLoading(true)
+
+  }, [])
+
+  return (
+
+    <main>
+      <button onClick={() => console.log('send')}>SEND</button>
+    </main>
+
   )
 }
