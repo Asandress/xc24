@@ -79,7 +79,7 @@ async function download(url, art, ISBN){
         console.log("Jpg to png!")
         
         // resolve(path.join(__dirname, './data/img/sample_image.jpg'))
-        resolve(`http://188.166.125.182/img/${ISBN}.jpg`)
+        resolve(`http://188.166.125.182:4200/img/${ISBN}.jpg`)
         
     });
   })
