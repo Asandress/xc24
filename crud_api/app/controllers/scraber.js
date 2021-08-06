@@ -117,7 +117,16 @@ const loadItem = async (page, art, data) => {
   // Name 3	
   dataObj['Name 3'] = ''
 
-  let text = await page.$eval('#product-about > p', text => text.textContent);
+  // let text = await page.$eval('#product-about > p', text => text.textContent);
+
+  let text = await page.evaluate(() => {
+    const element = document.querySelector('#product-about > p')
+    if (element) {
+      return element.textContent
+    }
+  
+    return '';
+  })
 
   
   // Preview text	
