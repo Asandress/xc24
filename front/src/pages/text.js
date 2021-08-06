@@ -29,7 +29,7 @@ export const Test = () => {
 
 
   //   try {
-  //     const data = await axios.post(`http://188.166.125.182:4200/app2/api/convertr/url`, formData, {
+  //     const data = await axios.post(`/app2/api/convertr/url`, formData, {
   //       headers: {
   //         'Content-Type': 'multipart/form-data'
   //       }

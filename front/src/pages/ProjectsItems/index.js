@@ -17,7 +17,7 @@ export const ProjectItems = () => {
 
   const getData = async () => {
     if (loading) return
-    const res = await axios.get(`http://188.166.125.182:4200/app2/api/project/get_project/${prjID}`)
+    const res = await axios.get(`/app2/api/project/get_project/${prjID}`)
     setDate(res.data.data)
     setDataLoad(true)
     setLoading(false)
@@ -25,7 +25,7 @@ export const ProjectItems = () => {
   }
 
   const parse = async () => {
-    axios.get(`http://188.166.125.182:4200/app2/api/project/scrab/${prjID}`)
+    axios.get(`/app2/api/project/scrab/${prjID}`)
   }
 
   useEffect(() => {
