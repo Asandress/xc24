@@ -158,6 +158,7 @@ const loadItem = async (page, art, data) => {
    let img = await page.evaluate(() => {
     const element = document.querySelector('#product-image > img')
     if (element) {
+      console.log(element)
       return element.getAttribute('src')
     }
     return '';
@@ -165,9 +166,9 @@ const loadItem = async (page, art, data) => {
   //  await page.$eval('#product-image > img', img => img.src);
 
 
-   let imgURL = await download(img, art, ISBN) 
+   let imgURL = img
    
-  dataObj['ItemImageUrl'] = imgURL
+  dataObj['ItemImageUrl'] = await download(imgURL, art, ISBN) 
   // Manufacturer
   let manufacturer = await page.$eval('.publisher', text => text.textContent);
   manufacturer = manufacturer.replace('Издательство: ', '').split(', ')
