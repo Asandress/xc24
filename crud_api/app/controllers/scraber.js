@@ -152,15 +152,26 @@ const loadItem = async (page, art, data) => {
   	
   // ItemImageUrl
   let ISBN = await page.$eval('.product-description .isbn', text => text.textContent);
-  ISBN = ISBN.split(':')
-  ISBN = ISBN[1].trim()
+  console.log(ISBN)
+  let ISBN1 = ISBN.split(':')
+  let ISBN2 = ISBN1[1].trim()
+  let ISBN3 = ISBN2.split(' ')
+  console.log(ISBN3)
+  let ISBN4 = ISBN3[0].trim()
 
    let img = await page.evaluate(() => {
-    const element = document.querySelector('#product-image > img')
+    let element = document.querySelector('#product-image > img')
     console.log('ele =>',element)
     if (element) {
-      
       return element.getAttribute('src')
+    } else {
+      //product-image-schoolkit
+      let element = document.querySelector('#product-image > .product-image-schoolkit > img')
+      console.log('ele 2 =>',element)
+      if (element) {
+        return element.getAttribute('src')
+      } 
+      return '';
     }
     return '';
   })
@@ -169,7 +180,7 @@ const loadItem = async (page, art, data) => {
 
    let imgURL = img
    
-  dataObj['ItemImageUrl'] = await download(imgURL, art, ISBN) 
+  dataObj['ItemImageUrl'] = await download(imgURL, art, ISBN4) 
   // Manufacturer
   let manufacturer = await page.$eval('.publisher', text => text.textContent);
   manufacturer = manufacturer.replace('Издательство: ', '').split(', ')
