@@ -164,7 +164,7 @@ const loadItem = async (page, art, data) => {
   //  await page.$eval('#product-image > img', img => img.src);
 
 
-   let imgURL = img !== '' ? await download(img, art, ISBN) : ''
+   let imgURL = await img !== '' ? await download(img, art, ISBN) : ''
    
   dataObj['ItemImageUrl'] = imgURL
   // Manufacturer
