@@ -157,8 +157,9 @@ const loadItem = async (page, art, data) => {
 
    let img = await page.evaluate(() => {
     const element = document.querySelector('#product-image > img')
+    console.log('ele =>',element)
     if (element) {
-      console.log(element)
+      
       return element.getAttribute('src')
     }
     return '';
