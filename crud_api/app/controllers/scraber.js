@@ -65,6 +65,7 @@ export const Scrabber = async (id, data) => new Promise(async (resolve, reject) 
 })
 
 async function download(url, art, ISBN){
+  if(url === '') return ''
   const response = await fetch(url);
   const buffer = await response.buffer();
 
@@ -164,7 +165,7 @@ const loadItem = async (page, art, data) => {
   //  await page.$eval('#product-image > img', img => img.src);
 
 
-   let imgURL = await img !== '' ? await download(img, art, ISBN) : ''
+   let imgURL = await download(img, art, ISBN) 
    
   dataObj['ItemImageUrl'] = imgURL
   // Manufacturer
