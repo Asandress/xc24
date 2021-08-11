@@ -111,10 +111,10 @@ const loadItem = async (page, art, data) => {
   dataObj['Variation name'] = `${await page.$eval('.prodtitle > h1', text => text.textContent)}`
   // Name 1 
   //title
-  dataObj['Name 1'] = `Buch: ${art} ${await page.$eval('.prodtitle > h1', text => text.textContent)}`
+  dataObj['Name 1'] = `Buch: ${await page.$eval('.prodtitle > h1', text => text.textContent)}`
   // full	Name 2
   //title
-  dataObj['full Name 2'] = `${art} ${await page.$eval('.prodtitle > h1', text => text.textContent)}`	
+  dataObj['full Name 2'] = `${await page.$eval('.prodtitle > h1', text => text.textContent)}`	
   // Name 3	
   dataObj['Name 3'] = ''
 
@@ -197,7 +197,7 @@ const loadItem = async (page, art, data) => {
   
   // await page.$eval('.authors > a', text => text.textContent);
   // ISBN
-  dataObj['ISBN'] = ISBN
+  dataObj['ISBN'] = ISBN4
   // Weight
 
   //dimensions
