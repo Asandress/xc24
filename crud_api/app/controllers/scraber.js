@@ -108,7 +108,7 @@ const loadItem = async (page, art, data) => {
   dataObj['CategoryID'] = data['Категория']
   // Variation name	
   //title
-  dataObj['Variation name'] = `${art} ${await page.$eval('.prodtitle > h1', text => text.textContent)}`
+  dataObj['Variation name'] = `${await page.$eval('.prodtitle > h1', text => text.textContent)}`
   // Name 1 
   //title
   dataObj['Name 1'] = `Buch: ${art} ${await page.$eval('.prodtitle > h1', text => text.textContent)}`
@@ -244,11 +244,11 @@ const loadItem = async (page, art, data) => {
   // Product type
   dataObj['Product type'] = ''
   // Purchase price
-  dataObj['Purchase price'] = data['Purche prise (закупка)']
+  dataObj['Purchase price'] = data['Purche prise (закупка)'].toFixed(2)
   // Sale
-  dataObj['Sale'] = data['Sale prise (цена розница)']
+  dataObj['Sale'] = data['Sale prise (цена розница)'].toFixed(2)
   // Opt
-  dataObj['Opt'] = data['Global prise (цена опт)']
+  dataObj['Opt'] = data['Global prise (цена опт)'].toFixed(2)
   // Year
   dataObj['Year'] = manufacturer[1].replace('. г', '')
   // Stranic

@@ -4,9 +4,9 @@ import cors from "cors"
 
 
 
-import morgan from'morgan'
+import morgan from 'morgan'
 
-import fetch from'node-fetch'
+import fetch from 'node-fetch'
 import gm from 'gm'
 import os from "os"
 
@@ -28,7 +28,7 @@ const app = express()
 
 //reader
 import converter from 'json-2-csv'
-import fs from'fs'
+import fs from 'fs'
 import reader from 'xlsx'
 import { Scrabber } from "./app/controllers/scraber.js"
 
@@ -60,28 +60,28 @@ app.use(express.urlencoded({ extended: true }))
 
 // db.sequelize.sync();
 
-async function download(url){
+async function download(url) {
   const response = await fetch(url);
   const buffer = await response.buffer();
- 
+
 
   const promise1 = new Promise((resolve, reject) => {
     fs.writeFile(`./data/img/image.png`, buffer, () => {
-    gm("./data/img/image.png").resize(500)
-    .write('./data/img/sample_image.jpg', function(err) {
-        if(err) console.log(err);
-        console.log("Jpg to png!")
-        
-        // resolve(path.join(__dirname, './data/img/sample_image.jpg'))
-        resolve('/data/img/sample_image.jpg')
-        
-    });
-  })
-})
+      gm("./data/img/image.png").resize(500)
+        .write('./data/img/sample_image.jpg', function (err) {
+          if (err) console.log(err);
+          console.log("Jpg to png!")
 
-return promise1
-  
-    
+          // resolve(path.join(__dirname, './data/img/sample_image.jpg'))
+          resolve('/data/img/sample_image.jpg')
+
+        });
+    })
+  })
+
+  return promise1
+
+
 }
 // app.use(express.static(path.join(__dirname, '../public')));
 // app.use('/data/img', express.static('/data/img/'));
@@ -95,16 +95,16 @@ app.post('/api/convertr/url', async (req, res) => {
 
   const url = req.body.url
 
-   download(url).then(data => {
+  download(url).then(data => {
     console.log(data)
-  //  res.sendFile(data);
+    //  res.sendFile(data);
     res.json({
       message: 'succsess',
-      url:data
+      url: data
     });
-    
-   })
-  
+
+  })
+
 })
 //--------------------------
 app.post('/api/project/create', (req, res) => {
@@ -123,44 +123,82 @@ app.post('/api/project/create', (req, res) => {
 
   const sheets = file.SheetNames
 
+  const limit = 250
+  // console.log('length =>',sheets.length )
+  // console.log('limit =>',sheets.length / limit)
+
+  let date = new Date()
+    //  console.log(date)
+
+      const pList = fs.readFileSync('./data/projects/index.json')
+      let projectJson = JSON.parse(pList)
+      let count = projectJson.length
+     // console.log(count)
+      let projectID
+      // if(+d[d.length - 1].id + 1)
+      if (count === 0) {
+        projectID = 1
+      } else {
+        projectID = +projectJson[count - 1].id + 1
+      }
+
+
   for (let i = 0; i < sheets.length; i++) {
     const temp = reader.utils.sheet_to_json(
       file.Sheets[file.SheetNames[i]])
-    temp.forEach((res) => {
-      data.push(res)
+    let rows = Math.ceil(temp.length / limit)
+
+    for (let p = 0; p < rows; p++) {
+      // console.log('limit => ', limit * p)
+      // console.log('rows =>', 0 + limit * p - limit)
+      let ii = 0
+      let dd = []
+      for (let r = 0 + limit * (p + 1) - limit; r < limit * (p + 1); r++) {
+
+        dd[ii] = temp[r]
+       // console.log(r)
+        ii++
+      }
+      data[p] = dd
+
+
+    }
+
+    //console.log('page =>', data)
+
+    data.map((el, ind) => {
+    //  console.log('data => ', el)
+
+      //----
+      
+
+      projectJson.push({ id: projectID + ind, name: req.body.project + '_' + ind, status: 'blank', date: date })
+
+
+
+      
+
+
+
+      fs.writeFile(`./data/${projectID + ind}.json`, JSON.stringify(data[ind]), function (err) {
+        if (err) return console.log(err);
+        // console.log(data);
+      });
+
     })
+
+
+    // temp.forEach((res) => {
+    //   data.push(res)
+    // })
   }
-
-  let date = new Date()
-console.log(date)
-
-  const pList = fs.readFileSync('./data/projects/index.json')
-  let projectJson = JSON.parse(pList)
-  let count = projectJson.length 
-  console.log(count)
-  let projectID 
-  // if(+d[d.length - 1].id + 1)
-  if(count === 0 ){
-    projectID = 1
-  } else {
-    projectID = +projectJson[count - 1].id + 1
-  }
-
-  projectJson.push({id:projectID, name:req.body.project,status:'blank', date:date})
-
-
 
   fs.writeFile(`./data/projects/index.json`, JSON.stringify(projectJson), function (err) {
     if (err) return console.log(err);
-    console.log('project =>',projectJson);
+   // console.log('project =>', projectJson);
   });
 
 
-
-  fs.writeFile(`./data/${projectID}.json`, JSON.stringify(data), function (err) {
-    if (err) return console.log(err);
-   // console.log(data);
-  });
 
   res.json({
     message: 'succsess',
@@ -223,15 +261,15 @@ app.get(`/api/project/csv_check_file/:id`, (req, res) => {
         url: `http://188.166.125.182:4200/projects/${id}.csv`
       });
     }
-  } catch(err) {
+  } catch (err) {
     console.error(err)
     res.json({
       message: 'error',
       url: ''
     });
   }
-  
-  
+
+
 
   res.json({
     message: 'succsess',
@@ -250,18 +288,18 @@ app.get(`/api/project/get_csv/:id`, (req, res) => {
   let projectJson = JSON.parse(pList)
 
   // convert JSON array to CSV string
-converter.json2csv(projectJson, (err, csv) => {
-  if (err) {
+  converter.json2csv(projectJson, (err, csv) => {
+    if (err) {
       throw err;
-  }
+    }
 
-  // print CSV string
-  console.log(csv);
+    // print CSV string
+    console.log(csv);
 
-  // write CSV to a file
-  fs.writeFileSync(`./data/projects/${id}.csv`, csv);
-  
-});
+    // write CSV to a file
+    fs.writeFileSync(`./data/projects/${id}.csv`, csv);
+
+  });
 
   res.json({
     message: 'succsess',
@@ -277,16 +315,16 @@ app.get(`/api/project/scrab/:id`, async (req, res) => {
   const pList = fs.readFileSync(`./data/${id}.json`)
   let data = JSON.parse(pList)
 
-  
-    await Scrabber(id, data).then(done => {
-      console.log('done ===> ',done)
+
+  await Scrabber(id, data).then(done => {
+    console.log('done ===> ', done)
 
 
-      res.json({
-        message: done,
-      })
+    res.json({
+      message: done,
     })
-    
+  })
+
 })
 
 
