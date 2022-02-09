@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { MdAddCircle, MdSend } from 'react-icons/md';
 import { useParams } from 'react-router-dom';
 
@@ -16,6 +16,8 @@ export const ProjectAdd = () => {
 
   const [err, setError] = useState(false)
 
+  
+
 
 
   const date = new Date().toDateString()
@@ -30,6 +32,8 @@ export const ProjectAdd = () => {
   }
 
   const send = async () => {
+
+    setLoad(true)
 
    // const HOST = 'http://localhost:4200'
 
@@ -57,13 +61,16 @@ export const ProjectAdd = () => {
       //   //  data: JSON.stringify(json, null, 2),
       //    headers: { "Content-Type": "application/json" } 
       // })
-      console.log(data)
+      //console.log(data)
+      //setLoad(false)
+      window.location.href = '/projects'
     } catch (error) {
       setError(error)
       console.log(error)
+      setLoad(false)
     }
 
-   // setLoad(true)
+    
   }
   return (
 

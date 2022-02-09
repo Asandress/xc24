@@ -10,10 +10,11 @@ export const ProjectStack = () => {
   let { path } = useRouteMatch();
   return (
     <Switch>
-      <Route exact path={path} component={Projects}/>
+      
       <Route path={`${path}/add`} component={ProjectAdd} />
       <Route path={`${path}/csv/:prjID`} component={ProjectCSV} />
       <Route path={`${path}/:prjID`} component={ProjectItems} />
+      <Route exact path={path} component={Projects}/>
     </Switch>
   )
 

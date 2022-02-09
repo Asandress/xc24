@@ -89,6 +89,27 @@ async function download(url) {
 // app.use(express.static('/data/projects/'))
 app.use(express.static('data'))
 
+const writeEvent = (res, sseId, data) => {
+  res.write(`id: ${sseId}\n`);
+  res.write(`data: ${data}\n\n`);
+};
+
+const sendEvent = (_req, res, data = '') => {
+  res.writeHead(200, {
+    'Cache-Control': 'no-cache',
+    Connection: 'keep-alive',
+    'Content-Type': 'text/event-stream',
+  });
+
+  const sseId = new Date().toDateString();
+
+  //  setInterval(() => {
+  //    data ? writeEvent(res, sseId, JSON.stringify(data)): ''
+  //  }, 300);
+
+ // writeEvent(res, sseId, JSON.stringify(data));
+};
+
 app.post('/api/convertr/url', async (req, res) => {
 
   console.log('body ===>', req.body.url)
@@ -107,10 +128,30 @@ app.post('/api/convertr/url', async (req, res) => {
 
 })
 //--------------------------
+
+app.get('/api/project/create', (req, res) => {
+
+  //console.log('body ===>', req.body)
+  //console.log('files ===>', req.files.file.path)
+
+  if (req.headers.accept === 'text/event-stream') {
+    sendEvent(req, res);
+  } else {
+    res.json({ message: 'Ok' });
+  }
+
+})
+
 app.post('/api/project/create', (req, res) => {
 
   console.log('body ===>', req.body)
   console.log('files ===>', req.files.file.path)
+
+  if (req.headers.accept === 'text/event-stream') {
+   // sendEvent(req, res);
+  } else {
+    res.json({ message: 'Ok' });
+  }
 
   const { path, name } = req.files.file
   console.log(req.files.file)
@@ -151,12 +192,13 @@ app.post('/api/project/create', (req, res) => {
     for (let p = 0; p < rows; p++) {
       // console.log('limit => ', limit * p)
       // console.log('rows =>', 0 + limit * p - limit)
+      console.log('rows ===> ', rows)
       let ii = 0
       let dd = []
       for (let r = 0 + limit * (p + 1) - limit; r < limit * (p + 1); r++) {
 
-        dd[ii] = temp[r]
-       // console.log(r)
+        temp[r] !== 'undefined' ? dd[ii] = temp[r] : ''
+        console.log('rrr =>',dd[ii])
         ii++
       }
       data[p] = dd
@@ -199,7 +241,7 @@ app.post('/api/project/create', (req, res) => {
   });
 
 
-
+  // sendEvent(req, res, 'work done');
   res.json({
     message: 'succsess',
   });
