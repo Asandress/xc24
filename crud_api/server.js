@@ -147,11 +147,11 @@ app.post('/api/project/create', (req, res) => {
   console.log('body ===>', req.body)
   console.log('files ===>', req.files.file.path)
 
-  if (req.headers.accept === 'text/event-stream') {
-   // sendEvent(req, res);
-  } else {
-    res.json({ message: 'Ok' });
-  }
+  // if (req.headers.accept === 'text/event-stream') {
+  //  // sendEvent(req, res);
+  // } else {
+  //   res.json({ message: 'Ok' });
+  // }
 
   const { path, name } = req.files.file
   console.log(req.files.file)
