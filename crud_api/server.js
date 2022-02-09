@@ -196,9 +196,12 @@ app.post('/api/project/create', (req, res) => {
       let ii = 0
       let dd = []
       for (let r = 0 + limit * (p + 1) - limit; r < limit * (p + 1); r++) {
-
-        temp[r] !== 'undefined' ? dd[ii] = temp[r] : ''
-        console.log('rrr =>',dd[ii])
+//
+        if(temp[r] !== undefined) {
+          console.log(temp[r])
+         dd[ii] = temp[r] 
+        }
+        
         ii++
       }
       data[p] = dd
