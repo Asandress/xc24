@@ -311,7 +311,7 @@ app.get(`/api/project/csv_check_file/:id`, (req, res) => {
     if (fs.existsSync(`./data/projects/${id}.csv`)) {
       res.json({
         message: 'succsess',
-        url: `${hostname}/projects/${id}.csv`
+        url: `${HOST}/projects/${id}.csv`
       });
     }
   } catch (err) {
