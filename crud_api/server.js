@@ -3,9 +3,7 @@ import formData from "express-form-data"
 import cors from "cors"
 
 
-// var os = require("os");
-// import os from 'os'
-// var hostname = os.hostname();
+
 
 
 import morgan from 'morgan'
@@ -32,7 +30,7 @@ dotenv.config()
 
 const app = express()
 
-// console.log('hostname ===>', os.hostname())
+
 
 //reader
 import converter from 'json-2-csv'
