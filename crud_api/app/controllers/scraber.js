@@ -5,7 +5,7 @@ import fetch from'node-fetch'
 import gm from 'gm'
 import os from "os"
 
-var hostname = os.hostname();
+var hostname = 'http://161.35.87.6';
 
 
 

@@ -25,7 +25,7 @@ const options = {
   autoClean: true
 };
 
-var hostname = os.hostname();
+var hostname = 'http://161.35.87.6'
 
 dotenv.config()
 
