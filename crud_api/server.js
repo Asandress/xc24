@@ -3,6 +3,10 @@ import formData from "express-form-data"
 import cors from "cors"
 
 
+// var os = require("os");
+// import os from 'os'
+// var hostname = os.hostname();
+
 
 import morgan from 'morgan'
 
@@ -21,10 +25,14 @@ const options = {
   autoClean: true
 };
 
+var hostname = os.hostname();
+
 dotenv.config()
 
 
 const app = express()
+
+// console.log('hostname ===>', os.hostname())
 
 //reader
 import converter from 'json-2-csv'
@@ -192,13 +200,13 @@ app.post('/api/project/create', (req, res) => {
     for (let p = 0; p < rows; p++) {
       // console.log('limit => ', limit * p)
       // console.log('rows =>', 0 + limit * p - limit)
-      console.log('rows ===> ', rows)
+     // console.log('rows ===> ', rows)
       let ii = 0
       let dd = []
       for (let r = 0 + limit * (p + 1) - limit; r < limit * (p + 1); r++) {
 //
         if(temp[r] !== undefined) {
-          console.log(temp[r])
+         // console.log(temp[r])
          dd[ii] = temp[r] 
         }
         
@@ -303,7 +311,7 @@ app.get(`/api/project/csv_check_file/:id`, (req, res) => {
     if (fs.existsSync(`./data/projects/${id}.csv`)) {
       res.json({
         message: 'succsess',
-        url: `http://188.166.125.182:4200/projects/${id}.csv`
+        url: `${hostname}/projects/${id}.csv`
       });
     }
   } catch (err) {

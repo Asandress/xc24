@@ -5,6 +5,8 @@ import fetch from'node-fetch'
 import gm from 'gm'
 import os from "os"
 
+var hostname = os.hostname();
+
 
 
 let prod = [];
@@ -74,13 +76,13 @@ async function download(url, art, ISBN){
 
   const promise1 = new Promise((resolve, reject) => {
     fs.writeFile(`./data/img/${ISBN}.png`, buffer, () => {
-    gm(`./data/img/${ISBN}.png`).resize(500)
+    gm(`./data/img/${ISBN}.png`).resize(500).background("#ffffff")
     .write(`./data/img/${ISBN}.jpg`, function(err) {
         if(err) console.log(err);
         console.log("Jpg to png!")
         
         // resolve(path.join(__dirname, './data/img/sample_image.jpg'))
-        resolve(`http://188.166.125.182:4200/img/${ISBN}.jpg`)
+        resolve(`${hostname}:4200/img/${ISBN}.jpg`)
         
     });
   })

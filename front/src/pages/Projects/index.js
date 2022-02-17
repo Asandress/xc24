@@ -25,10 +25,21 @@ export const Projects = () => {
   async function getData() {
     if (loading) return
     let data = await axios.get('/api/project/project_list')
-    //console.log(data.data)
-    setData(data.data.data)
-    setDataLoad(true)
-    setLoading(false)
+    console.log(data.data)
+    try{
+      setData(data.data.data)
+      setDataLoad(true)
+      setLoading(false)
+    } catch(e) {
+      // let data = await axios.get('/api/project/project_list')
+      // setData(data.data.data)
+      // setDataLoad(true)
+      // setLoading(false)
+      console.log(e)
+    }
+
+    
+    
   }
 
   useEffect(() => {
