@@ -25,7 +25,7 @@ const options = {
   autoClean: true
 };
 
-var hostname = 'http://161.35.87.6'
+var hostname = 'http://161.35.87.6:4200'
 
 dotenv.config()
 
@@ -311,7 +311,7 @@ app.get(`/api/project/csv_check_file/:id`, (req, res) => {
     if (fs.existsSync(`./data/projects/${id}.csv`)) {
       res.json({
         message: 'succsess',
-        url: `${HOST}/projects/${id}.csv`
+        url: `${hostname}/projects/${id}.csv`
       });
     }
   } catch (err) {
