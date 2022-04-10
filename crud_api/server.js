@@ -358,6 +358,25 @@ app.get(`/api/project/get_csv/:id`, (req, res) => {
   });
 })
 
+app.get(`/api/project/err/:id`, (req, res) => {
+
+  const id = req.params.id
+
+  console.log(id)
+
+
+  const pList = fs.readFileSync(`./data/projects/err_${id}.json`)
+  let projectJson = JSON.parse(pList)
+
+  
+
+  res.json({
+    message: 'succsess',
+    data: projectJson
+  });
+})
+
+
 app.get(`/api/project/scrab/:id`, async (req, res) => {
 
   const id = req.params.id

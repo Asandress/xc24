@@ -27,7 +27,19 @@ let r = []
       timeout: 0
     });
     let dataRes = await loadItem(page, art, data).then(res => res)
-    resolve(dataRes)
+    if(dataRes?.error) {
+      resolve({
+        'error':1,
+        'data': dataRes?.error
+      })
+    }
+    else{
+      resolve({
+          'error':0,
+          'data':dataRes
+        })
+    }
+    
 
     await browser.close();
     
@@ -35,15 +47,25 @@ let r = []
 
 const getData = async (data) => {
   let arr =[]
+  let errArr = []
 
   for(let link in data){
     console.log(data[link].Артикул)
     let res = await urlPromise(data[link].Артикул, data[link])
+    if(res?.error === 1) {
+      errArr.push({'art':data[link].Артикул,
+      'message':res?.data})
+    }
+    else{
+      arr.push(res.data)
+    }
     
-    arr.push(res)
+    
   }
 
-  return arr
+  return ({
+    'data':arr,
+    'err':errArr})
   // )
 }
 export const Scrabber = async (id, data) => new Promise(async (resolve, reject) => {
@@ -52,12 +74,19 @@ export const Scrabber = async (id, data) => new Promise(async (resolve, reject) 
 
   getData(data)
   .then(data => {
-    console.log('json ===> ',data)
+    console.log('json ===> ',data.data)
 
-    fs.writeFile(`./data/projects/${id}.json`, JSON.stringify(data), function (err) {
-      if (err) return console.log(err);
+    fs.writeFile(`./data/projects/${id}.json`, JSON.stringify(data.data), function (error) {
+      if (error) return console.log(error);
 
     });
+    if(data.err.length > 0 ){
+      console.log(data.err)
+      fs.writeFile(`./data/projects/err_${id}.json`, JSON.stringify(data.err), function (e) {
+        if (e) return console.log(e);
+  
+      });
+    }
 
     // console.log('d',data)
 
@@ -95,6 +124,8 @@ return promise1
 
 
 const loadItem = async (page, art, data) => {
+  try {
+    
   prod = [];
 
   await page.waitForSelector('#product');
@@ -262,38 +293,15 @@ const loadItem = async (page, art, data) => {
     }
     return '';
   })
-  // await page.$eval('.pages2', text => text.textContent);
+
   pages = pages.replace('Страниц: ', '')
   dataObj['Stranic'] = pages
 
- 
-  
- 
-  
-
-  //item preview text (300)
-  // dataObj['prev_text'] = await page.$eval('.prodtitle > h1', text => text.textContent);
-  // //item text
-  // dataObj['text'] = await page.$eval('.prodtitle > h1', text => text.textContent);
-  // //img
-  
-  // //author
-  
-  // //ISBN
-  
-  
-  
-  // dataObj['dimensions'] = dimensions
-  
-  // //year
-  
-  
-  // //Manufacturer
-  
-
- 
-
   return dataObj
+
+} catch (error) {
+    return {'error': error.message}
+}
 
 
 }

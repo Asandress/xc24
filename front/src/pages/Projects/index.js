@@ -64,6 +64,8 @@ export const Projects = () => {
         <div className="project__date">{el.date.toString()}</div>
         <Link to={`/projects/${el.id}`}>SHOW</Link>
         <Link to={`/projects/csv/${el.id}`}>CSV</Link>
+        <Link to={`/projects/err/${el.id}`}>err</Link>
+
 
       </div>)
     })
