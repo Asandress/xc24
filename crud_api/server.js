@@ -170,7 +170,7 @@ app.post('/api/project/create', (req, res) => {
 
   const sheets = file.SheetNames
 
-  const limit = 250
+  const limit = 25
   // console.log('length =>',sheets.length )
   // console.log('limit =>',sheets.length / limit)
 
