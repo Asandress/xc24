@@ -357,6 +357,48 @@ app.get(`/api/project/get_csv/:id`, (req, res) => {
     data: projectJson
   });
 })
+//func for delete 
+app.get(`/api/project/del/:id`, (req, res) => {
+
+  const id = req.params.id
+
+  console.log(id)
+
+
+  // const pList = fs.readFileSync(`./data/projects/err_${id}.json`)
+  // let projectJson = JSON.parse(pList)
+
+  const pList = fs.readFileSync('./data/projects/index.json')
+  let projectJson = JSON.parse(pList)
+
+  console.log(projectJson)
+
+  const path = `./data/projects/${id}.json`
+
+try {
+  fs.unlinkSync(path)
+  //file removed
+} catch(err) {
+  console.error(err)
+}
+
+const activeList = projectJson.filter((item) => item.id != id);
+console.log(activeList)
+
+
+fs.writeFile(`./data/projects/index.json`, JSON.stringify(activeList), function (err) {
+  if (err) return console.log(err);
+ // console.log('project =>', projectJson);
+});
+
+
+
+  
+
+  res.json({
+    message: 'succsess',
+  });
+})
 
 app.get(`/api/project/err/:id`, (req, res) => {
 

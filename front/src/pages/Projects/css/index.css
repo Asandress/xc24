@@ -32,3 +32,13 @@
   border-radius: 8px;
   background: greenyellow;
 }
+.del_json {
+  background-color: red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2px 15px;
+  margin: 4px;
+  color: white;
+  border-radius: 8px;
+}

@@ -53,6 +53,24 @@ export const Projects = () => {
     setDataLoad(true)
   }, [data])
 
+  const delJson = async (id) => {
+    setLoading(true)
+    let del_data = await axios.get(`/api/project/del/${id}`)
+    console.log(del_data.data)
+
+
+    
+    let data = await axios.get('/api/project/project_list')
+    try{
+      setData(data.data.data)
+      setDataLoad(true)
+      setLoading(false)
+    } catch(e) {
+      
+      console.log(e)
+    }
+  }
+
 
   const dataList = () => {
     let rows = []
@@ -65,6 +83,7 @@ export const Projects = () => {
         <Link to={`/projects/${el.id}`}>SHOW</Link>
         <Link to={`/projects/csv/${el.id}`}>CSV</Link>
         <Link to={`/projects/err/${el.id}`}>err</Link>
+        <div className='del_json' onClick={() => delJson(el.id)}>del</div>
 
 
       </div>)
