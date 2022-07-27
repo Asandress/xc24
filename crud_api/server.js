@@ -386,7 +386,7 @@ const activeList = projectJson.filter((item) => item.id != id);
 console.log(activeList)
 
 
-fs.writeFile(`./data/index.json`, JSON.stringify(activeList), function (err) {
+fs.writeFile(`./data/projects/index.json`, JSON.stringify(activeList), function (err) {
   if (err) return console.log(err);
  // console.log('project =>', projectJson);
 });
