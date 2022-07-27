@@ -382,6 +382,15 @@ try {
   console.error(err)
 }
 
+const pathCsv = `./data/projects/${id}.csv`
+
+try {
+  fs.unlinkSync(pathCsv)
+  //file removed
+} catch(err) {
+  console.error(err)
+}
+
 const activeList = projectJson.filter((item) => item.id != id);
 console.log(activeList)
 
