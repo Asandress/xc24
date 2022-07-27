@@ -373,7 +373,7 @@ app.get(`/api/project/del/:id`, (req, res) => {
 
   console.log(projectJson)
 
-  const path = `./data/projects/${id}.json`
+  const path = `./data/${id}.json`
 
 try {
   fs.unlinkSync(path)
@@ -386,7 +386,7 @@ const activeList = projectJson.filter((item) => item.id != id);
 console.log(activeList)
 
 
-fs.writeFile(`./data/projects/index.json`, JSON.stringify(activeList), function (err) {
+fs.writeFile(`./data/index.json`, JSON.stringify(activeList), function (err) {
   if (err) return console.log(err);
  // console.log('project =>', projectJson);
 });
